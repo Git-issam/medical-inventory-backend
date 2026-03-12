@@ -1,7 +1,7 @@
 {
-  "name": "medical-inventory-backend",
+  "name": "healthhub-backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "HealthHub Pharmacy - Medical Inventory Management Backend",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

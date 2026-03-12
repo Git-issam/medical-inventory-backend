@@ -13,7 +13,7 @@ const Medicine = sequelize.define('Medicine', {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    stockAvailable: {
+    stock: {
         type: DataTypes.INTEGER,
         allowNull: false,
         defaultValue: 0,
@@ -27,11 +27,16 @@ const Medicine = sequelize.define('Medicine', {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    supplierName: {
+    supplier: {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    expiryDate: {
+    price: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+        defaultValue: 0,
+    },
+    expiry: {
         type: DataTypes.DATEONLY, // Using DATEONLY for yyyy-mm-dd
         allowNull: false,
     },
@@ -45,11 +50,11 @@ const Medicine = sequelize.define('Medicine', {
         beforeSave: (medicine) => {
             const now = new Date();
             // Simple date comparison
-            const expiry = new Date(medicine.expiryDate);
+            const expiryDate = new Date(medicine.expiry);
 
-            if (expiry < now) {
+            if (expiryDate < now) {
                 medicine.status = 'Expired';
-            } else if (medicine.stockAvailable < 10) {
+            } else if (medicine.stock <= 10) {
                 medicine.status = 'Low Stock';
             } else {
                 medicine.status = 'Available';

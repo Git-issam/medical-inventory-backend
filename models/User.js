@@ -9,7 +9,7 @@ const User = sequelize.define('User', {
   },
   fullName: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   email: {
     type: DataTypes.STRING,
@@ -29,4 +29,4 @@ const User = sequelize.define('User', {
 
 module.exports = User;
 
-//
+
