@@ -53,14 +53,29 @@ app.get('/api/config', (req, res) => {
     });
 });
 
-// Database Connection & Server Start
-sequelize.sync()
-    .then(() => {
-        console.log('Connected to MySQL Database');
-        app.listen(PORT, () => {
-            console.log(`Server running on port ${PORT}`);
-        });
-    })
-    .catch((err) => {
-        console.error('Database connection error:', err);
-    });
+// Database Connection & Server Start with retry logic
+const connectWithRetry = async (retries = 5, delay = 5000) => {
+    for (let i = 1; i <= retries; i++) {
+        try {
+            await sequelize.authenticate();
+            await sequelize.sync();
+            console.log('Connected to MySQL Database');
+            app.listen(PORT, () => {
+                console.log(`Server running on port ${PORT}`);
+            });
+            return;
+        } catch (err) {
+            console.error(`DB connection attempt ${i}/${retries} failed:`, err.message);
+            if (i < retries) {
+                console.log(`Retrying in ${delay / 1000}s...`);
+                await new Promise(res => setTimeout(res, delay));
+            } else {
+                console.error('All DB connection attempts failed. Exiting.');
+                process.exit(1);
+            }
+        }
+    }
+};
+
+connectWithRetry();
+
