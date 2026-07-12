@@ -16,6 +16,7 @@ const PORT = process.env.PORT || 5000;
 const allowedOrigins = [
     'http://localhost:3000',
     'https://medical-inventory-backend-production-2b53.up.railway.app',
+    'https://agent-6a53bd9a38c928a783--storied-tartufo-b3ce2e.netlify.app',
     process.env.FRONTEND_URL, // set this in Railway variables once you have Netlify URL
 ].filter(Boolean);
 
