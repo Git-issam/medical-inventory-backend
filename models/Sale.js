@@ -24,13 +24,12 @@ const Sale = sequelize.define('Sale', {
     items: {
         type: DataTypes.TEXT('long'),
         allowNull: false,
-        defaultValue: '[]',
         get() {
             const raw = this.getDataValue('items');
             try { return JSON.parse(raw); } catch (e) { return []; }
         },
         set(val) {
-            this.setDataValue('items', JSON.stringify(val));
+            this.setDataValue('items', JSON.stringify(val || []));
         },
     },
     subtotal: {
@@ -65,6 +64,12 @@ const Sale = sequelize.define('Sale', {
     },
 }, {
     timestamps: true,
+});
+
+Sale.beforeValidate((sale) => {
+    if (sale.items === undefined || sale.items === null) {
+        sale.items = [];
+    }
 });
 
 module.exports = Sale;
