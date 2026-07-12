@@ -35,7 +35,7 @@ app.get('/api/config', (req, res) => {
 });
 
 // Database Connection & Server Start
-sequelize.sync({ alter: true })
+sequelize.sync()
     .then(() => {
         console.log('Connected to MySQL Database');
         app.listen(PORT, () => {

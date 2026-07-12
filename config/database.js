@@ -8,6 +8,15 @@ const sequelize = new Sequelize(
         host: process.env.DB_HOST,
         dialect: 'mysql',
         logging: false, // set to console.log to see SQL queries
+        pool: {
+            max: 10,
+            min: 0,
+            acquire: 30000, // max ms to wait for a connection before throwing error
+            idle: 10000,    // max ms a connection can be idle before being released
+        },
+        dialectOptions: {
+            connectTimeout: 30000, // 30s connection timeout
+        },
     }
 );
 
